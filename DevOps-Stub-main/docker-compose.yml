@@ -1,0 +1,68 @@
+version: '3.3'
+services:
+  db:
+    container_name: db
+    image: mysql:8
+    restart: always
+    ports:
+      - "3306:3306"
+    # env_file: 
+    #   - backend/.env
+    volumes:
+      - ./db:/var/lib/mysql/
+    #environment:
+      #MYSQL_DATABASE: "dbserver1"
+      #MYSQL_ROOT_PASSWORD: "Server@123"
+      #MYSQL_USERNAME: "root"
+      #MYSQL_PASSWORD: "Server@123"
+
+
+  app:
+    container_name: app
+    build: backend/.
+    #command: RAILS_ENV=production rails db:migrate
+    #command: bash -c "rails server -p 3000 -b '0.0.0.0'"
+    command: bash -c "bundle exec rake db:migrate && bundle exec rails s -p 3000 -b '0.0.0.0'"
+    volumes:
+      - ./backend/.:/app
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    tty: true
+    links:
+      - db
+    depends_on:
+      - db
+    # env_file: 
+    #   - backend/.env
+    environment:
+      RAILS_ENV: development
+      RAILS_MAX_THREADS: 5
+      DB_HOST: dbserver1.mysql.database.azure.com
+      DB_USERNAME: mysql
+      DB_PASSWORD: Server@123
+      DB_PORT: 3306
+      DB_DATABASE: dbserver1
+
+  web:
+    container_name: web
+    build: frontend/.
+    #env_file: 
+    #  - frontend/.env
+    environment:
+      REACT_APP_API_URL: http://app:3000
+    stdin_open: true
+    tty: true
+    ports:
+      - "80:80"
+    volumes:
+      - ./frontend/:/frontend
+      - ./frontend/node_modules:/frontend/node_modules
+    links:
+      - db
+      - app
+    depends_on:
+      - db
+      - app
+
+

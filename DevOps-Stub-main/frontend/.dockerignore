@@ -1,0 +1,19 @@
+#Ignore the logs directory
+build
+node_modules
+.dockerignore
+Dockerfile
+Dockerfile.prod
+.gitignore
+README.md
+
+#Ignoring the password file
+# passwords.txt
+
+#Ignoring git and cache folders
+# .git
+# .cache
+
+#Ignoring all the markdown and class files
+# *.md
+# **/*.class
