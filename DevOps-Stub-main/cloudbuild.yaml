@@ -1,4 +1,4 @@
 steps:
 - name: gcr.io/cloud-builders/docker
- args: ["build", "-t", "$_IMAGE_TAG", "-f", "frontend/Dockerfile",  "frontend/"]
+ args: ["build", "-t", "asia-southeast1-docker.pkg.dev/omni-devops-364711/ats-registry/frontend-$SHORT_SHA", "-f", "frontend/Dockerfile",  "frontend/"]
 images: [asia-southeast1-docker.pkg.dev/omni-devops-364711/ats-registry/test-$SHORT_SHA]
